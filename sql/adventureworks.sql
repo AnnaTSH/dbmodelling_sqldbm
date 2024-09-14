@@ -23,6 +23,7 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."DimCurrency" (
 	constraint PK_DimCurrency primary key ("CurrencyKey")
 )COMMENT='Dimension for Currency Data'
 ;
+
 create or replace TABLE ADVENTUREWORKSDW.EDW."DimCustomer" (
 	"CustomerKey" NUMBER(38,0) NOT NULL autoincrement COMMENT 'Customer Identifier',
 	"GeographyKey" NUMBER(38,0) COMMENT 'Geographic information',
@@ -54,7 +55,7 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."DimCustomer" (
 	"DateFirstPurchase" DATE,
 	"CommuteDistance" VARCHAR(15),
 	constraint PK_DimCustomer primary key ("CustomerKey"),
-	constraint FK_DimCustomer_401 foreign key ("GeographyKey") references ADVENTUREWORKSDW.EDW."DimGeography"(GeographyKey)
+	constraint FK_DimCustomer_401 foreign key ("GeographyKey") references ADVENTUREWORKSDW.EDW."DimGeography"("GeographyKey")
 )COMMENT='Dimension for Customer Data'
 ;
 create or replace TABLE ADVENTUREWORKSDW.EDW."DimDate" (
@@ -119,8 +120,8 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."DimEmployee" (
 	"EndDate" DATE,
 	"Status" VARCHAR(50),
 	constraint PK_DimEmployee primary key ("EmployeeKey"),
-	constraint FK_DimEmployee_403 foreign key ("ParentEmployeeKey") references ADVENTUREWORKSDW.EDW."DimEmployee"(EmployeeKey),
-	constraint FK_DimEmployee_405 foreign key ("SalesTerritoryKey") references ADVENTUREWORKSDW.EDW."DimSalesTerritory"(SalesTerritoryKey)
+	constraint FK_DimEmployee_403 foreign key ("ParentEmployeeKey") references ADVENTUREWORKSDW.EDW."DimEmployee"("EmployeeKey"),
+	constraint FK_DimEmployee_405 foreign key ("SalesTerritoryKey") references ADVENTUREWORKSDW.EDW."DimSalesTerritory"("SalesTerritoryKey")
 )COMMENT='This table holds all Employee Information'
 ;
 create or replace TABLE ADVENTUREWORKSDW.EDW."DimGeography" (
@@ -181,7 +182,7 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."DimProduct" (
 	"TurkishDescription" VARCHAR(400),
 	"Status" VARCHAR(7),
 	constraint PK_DimProduct primary key ("ProductKey"),
-	constraint FK_DimProduct_407 foreign key ("ProductSubcategoryKey") references ADVENTUREWORKSDW.EDW."DimProductSubcategory"(ProductSubcategoryKey)
+	constraint FK_DimProduct_407 foreign key ("ProductSubcategoryKey") references ADVENTUREWORKSDW.EDW."DimProductSubcategory"("ProductSubcategoryKey")
 );
 create or replace TABLE ADVENTUREWORKSDW.EDW."DimProductCategory" (
 	"ProductCategoryKey" NUMBER(38,0) NOT NULL autoincrement,
@@ -199,7 +200,7 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."DimProductSubcategory" (
 	"FrenchProductSubcategoryName" VARCHAR(50) NOT NULL,
 	"ProductCategoryKey" NUMBER(38,0),
 	constraint PK_DimProductSubcategory primary key ("ProductSubcategoryKey"),
-	constraint FK_DimProductSubcategory_409 foreign key ("ProductCategoryKey") references ADVENTUREWORKSDW.EDW."DimProductCategory"(ProductCategoryKey)
+	constraint FK_DimProductSubcategory_409 foreign key ("ProductCategoryKey") references ADVENTUREWORKSDW.EDW."DimProductCategory"("ProductCategoryKey")
 );
 create or replace TABLE ADVENTUREWORKSDW.EDW."DimPromotion" (
 	"PromotionKey" NUMBER(38,0) NOT NULL autoincrement,
@@ -240,7 +241,7 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."DimReseller" (
 	"AnnualRevenue" NUMBER(38,0),
 	"YearOpened" NUMBER(38,0),
 	constraint PK_DimReseller primary key ("ResellerKey"),
-	constraint FK_DimReseller_411 foreign key ("GeographyKey") references ADVENTUREWORKSDW.EDW."DimGeography"(GeographyKey)
+	constraint FK_DimReseller_411 foreign key ("GeographyKey") references ADVENTUREWORKSDW.EDW."DimGeography"("GeographyKey")
 );
 create or replace TABLE ADVENTUREWORKSDW.EDW."DimSalesTerritory" (
 	"SalesTerritoryKey" NUMBER(38,0) NOT NULL autoincrement,
@@ -267,8 +268,8 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."FactCurrencyRate" (
 	"DateKey" NUMBER(38,0) NOT NULL,
 	"AverageRate" FLOAT NOT NULL,
 	"EndOfDayRate" FLOAT NOT NULL,
-	constraint FK_FactCurrencyRate_413 foreign key ("CurrencyKey") references ADVENTUREWORKSDW.EDW."DimCurrency"(CurrencyKey),
-	constraint FK_FactCurrencyRate_415 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey)
+	constraint FK_FactCurrencyRate_413 foreign key ("CurrencyKey") references ADVENTUREWORKSDW.EDW."DimCurrency"("CurrencyKey"),
+	constraint FK_FactCurrencyRate_415 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey")
 );
 create or replace TABLE ADVENTUREWORKSDW.EDW."FactFinance" (
 	"FinanceKey" NUMBER(38,0) NOT NULL autoincrement,
@@ -278,11 +279,11 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."FactFinance" (
 	"ScenarioKey" NUMBER(38,0) NOT NULL,
 	"AccountKey" NUMBER(38,0) NOT NULL,
 	"Amount" FLOAT NOT NULL,
-	constraint FK_FactFinance_417 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey),
-	constraint FK_FactFinance_419 foreign key ("OrganizationKey") references ADVENTUREWORKSDW.EDW."DimOrganization"(OrganizationKey),
-	constraint FK_FactFinance_421 foreign key ("DepartmentGroupKey") references ADVENTUREWORKSDW.EDW."DimDepartmentGroup"(DepartmentGroupKey),
-	constraint FK_FactFinance_423 foreign key ("ScenarioKey") references ADVENTUREWORKSDW.EDW."DimScenario"(ScenarioKey),
-	constraint FK_FactFinance_425 foreign key ("AccountKey") references ADVENTUREWORKSDW.EDW."DimAccount"(AccountKey)
+	constraint FK_FactFinance_417 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey"),
+	constraint FK_FactFinance_419 foreign key ("OrganizationKey") references ADVENTUREWORKSDW.EDW."DimOrganization"("OrganizationKey"),
+	constraint FK_FactFinance_421 foreign key ("DepartmentGroupKey") references ADVENTUREWORKSDW.EDW."DimDepartmentGroup"("DepartmentGroupKey"),
+	constraint FK_FactFinance_423 foreign key ("ScenarioKey") references ADVENTUREWORKSDW.EDW."DimScenario"("ScenarioKey"),
+	constraint FK_FactFinance_425 foreign key ("AccountKey") references ADVENTUREWORKSDW.EDW."DimAccount"("AccountKey")
 )COMMENT='Facts for Finance'
 ;
 create or replace TABLE ADVENTUREWORKSDW.EDW."FactInternetSales" (
@@ -309,14 +310,14 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."FactInternetSales" (
 	"Freight" NUMBER(38,0) NOT NULL,
 	"CarrierTrackingNumber" VARCHAR(25),
 	"CustomerPONumber" VARCHAR(25),
-	constraint FK_FactInternetSales_427 foreign key ("ProductKey") references ADVENTUREWORKSDW.EDW."DimProduct"(ProductKey),
-	constraint FK_FactInternetSales_429 foreign key ("CustomerKey") references ADVENTUREWORKSDW.EDW."DimCustomer"(CustomerKey),
-	constraint FK_FactInternetSales_431 foreign key ("PromotionKey") references ADVENTUREWORKSDW.EDW."DimPromotion"(PromotionKey),
-	constraint FK_FactInternetSales_433 foreign key ("CurrencyKey") references ADVENTUREWORKSDW.EDW."DimCurrency"(CurrencyKey),
-	constraint FK_FactInternetSales_435 foreign key ("SalesTerritoryKey") references ADVENTUREWORKSDW.EDW."DimSalesTerritory"(SalesTerritoryKey),
-	constraint FK_FactInternetSales_437 foreign key ("OrderDateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey),
-	constraint FK_FactInternetSales_439 foreign key ("DueDateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey),
-	constraint FK_FactInternetSales_441 foreign key ("ShipDateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey)
+	constraint FK_FactInternetSales_427 foreign key ("ProductKey") references ADVENTUREWORKSDW.EDW."DimProduct"("ProductKey"),
+	constraint FK_FactInternetSales_429 foreign key ("CustomerKey") references ADVENTUREWORKSDW.EDW."DimCustomer"("CustomerKey"),
+	constraint FK_FactInternetSales_431 foreign key ("PromotionKey") references ADVENTUREWORKSDW.EDW."DimPromotion"("PromotionKey"),
+	constraint FK_FactInternetSales_433 foreign key ("CurrencyKey") references ADVENTUREWORKSDW.EDW."DimCurrency"("CurrencyKey"),
+	constraint FK_FactInternetSales_435 foreign key ("SalesTerritoryKey") references ADVENTUREWORKSDW.EDW."DimSalesTerritory"("SalesTerritoryKey"),
+	constraint FK_FactInternetSales_437 foreign key ("OrderDateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey"),
+	constraint FK_FactInternetSales_439 foreign key ("DueDateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey"),
+	constraint FK_FactInternetSales_441 foreign key ("ShipDateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey")
 )COMMENT='Fact table to hold Currency Data'
 ;
 create or replace TABLE ADVENTUREWORKSDW.EDW."FactProductInventory" (
@@ -327,7 +328,7 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."FactProductInventory" (
 	"UnitsIn" NUMBER(38,0) NOT NULL,
 	"UnitsOut" NUMBER(38,0) NOT NULL,
 	"UnitsBalance" NUMBER(38,0) NOT NULL,
-	constraint FK_FactProductInventory_443 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey)
+	constraint FK_FactProductInventory_443 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey")
 );
 create or replace TABLE ADVENTUREWORKSDW.EDW."FactResellerSales" (
 	"ProductKey" NUMBER(38,0) NOT NULL,
@@ -354,15 +355,15 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."FactResellerSales" (
 	"Freight" NUMBER(38,0),
 	"CarrierTrackingNumber" VARCHAR(25),
 	"CustomerPONumber" VARCHAR(25),
-	constraint FK_FactResellerSales_445 foreign key ("ProductKey") references ADVENTUREWORKSDW.EDW."DimProduct"(ProductKey),
-	constraint FK_FactResellerSales_447 foreign key ("ResellerKey") references ADVENTUREWORKSDW.EDW."DimReseller"(ResellerKey),
-	constraint FK_FactResellerSales_449 foreign key ("EmployeeKey") references ADVENTUREWORKSDW.EDW."DimEmployee"(EmployeeKey),
-	constraint FK_FactResellerSales_451 foreign key ("PromotionKey") references ADVENTUREWORKSDW.EDW."DimPromotion"(PromotionKey),
-	constraint FK_FactResellerSales_453 foreign key ("CurrencyKey") references ADVENTUREWORKSDW.EDW."DimCurrency"(CurrencyKey),
-	constraint FK_FactResellerSales_455 foreign key ("SalesTerritoryKey") references ADVENTUREWORKSDW.EDW."DimSalesTerritory"(SalesTerritoryKey),
-	constraint FK_FactResellerSales_457 foreign key ("OrderDateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey),
-	constraint FK_FactResellerSales_459 foreign key ("DueDateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey),
-	constraint FK_FactResellerSales_461 foreign key ("ShipDateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey)
+	constraint FK_FactResellerSales_445 foreign key ("ProductKey") references ADVENTUREWORKSDW.EDW."DimProduct"("ProductKey"),
+	constraint FK_FactResellerSales_447 foreign key ("ResellerKey") references ADVENTUREWORKSDW.EDW."DimReseller"("ResellerKey"),
+	constraint FK_FactResellerSales_449 foreign key ("EmployeeKey") references ADVENTUREWORKSDW.EDW."DimEmployee"("EmployeeKey"),
+	constraint FK_FactResellerSales_451 foreign key ("PromotionKey") references ADVENTUREWORKSDW.EDW."DimPromotion"("PromotionKey"),
+	constraint FK_FactResellerSales_453 foreign key ("CurrencyKey") references ADVENTUREWORKSDW.EDW."DimCurrency"("CurrencyKey"),
+	constraint FK_FactResellerSales_455 foreign key ("SalesTerritoryKey") references ADVENTUREWORKSDW.EDW."DimSalesTerritory"("SalesTerritoryKey"),
+	constraint FK_FactResellerSales_457 foreign key ("OrderDateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey"),
+	constraint FK_FactResellerSales_459 foreign key ("DueDateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey"),
+	constraint FK_FactResellerSales_461 foreign key ("ShipDateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey")
 )COMMENT='Fact data of Reseller Sales'
 ;
 create or replace TABLE ADVENTUREWORKSDW.EDW."FactSalesQuota" (
@@ -372,7 +373,7 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."FactSalesQuota" (
 	"CalendarYear" NUMBER(38,0) NOT NULL,
 	"CalendarQuarter" NUMBER(38,0) NOT NULL,
 	"SalesAmountQuota" NUMBER(38,0) NOT NULL,
-	constraint FK_FactSalesQuota_463 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey)
+	constraint FK_FactSalesQuota_463 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey")
 );
 create or replace TABLE ADVENTUREWORKSDW.EDW."FactSurveyResponse" (
 	"SurveyResponseKey" NUMBER(38,0) NOT NULL autoincrement,
@@ -382,8 +383,8 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."FactSurveyResponse" (
 	"EnglishProductCategoryName" VARCHAR(50) NOT NULL,
 	"ProductSubcategoryKey" NUMBER(38,0) NOT NULL,
 	"EnglishProductSubcategoryName" VARCHAR(50) NOT NULL,
-	constraint FK_FactSurveyResponse_465 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey),
-	constraint FK_FactSurveyResponse_467 foreign key ("ProductCategoryKey") references ADVENTUREWORKSDW.EDW."DimProductCategory"(ProductCategoryKey)
+	constraint FK_FactSurveyResponse_465 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey"),
+	constraint FK_FactSurveyResponse_467 foreign key ("ProductCategoryKey") references ADVENTUREWORKSDW.EDW."DimProductCategory"("ProductCategoryKey")
 );
 create or replace TABLE ADVENTUREWORKSDW.EDW."NewFactCurrencyRate" (
 	"AverageRate" FLOAT,
@@ -392,55 +393,6 @@ create or replace TABLE ADVENTUREWORKSDW.EDW."NewFactCurrencyRate" (
 	"EndOfDayRate" FLOAT,
 	"CurrencyKey" NUMBER(38,0),
 	"DateKey" NUMBER(38,0),
-	constraint FK_NewFactCurrencyRate_469 foreign key ("CurrencyKey") references ADVENTUREWORKSDW.EDW."DimCurrency"(CurrencyKey),
-	constraint FK_NewFactCurrencyRate_471 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"(DateKey)
+	constraint FK_NewFactCurrencyRate_469 foreign key ("CurrencyKey") references ADVENTUREWORKSDW.EDW."DimCurrency"("CurrencyKey"),
+	constraint FK_NewFactCurrencyRate_471 foreign key ("DateKey") references ADVENTUREWORKSDW.EDW."DimDate"("DateKey")
 );
-
-Create or Replace View ADVENTUREWORKSDW.EDW.DIM_PRODUCT_CAT_SUBCAT_V 
-
-  comment = 'Product details with cat and subcat english names. For fwd/rev engineering' 
-
-AS
-(
-WITH cat_subcat as (
-SELECT cat.* , sub."ProductSubcategoryKey" as "SubProductSubcategoryKey", sub."EnglishProductSubcategoryName"  FROM "DimProductCategory" cat
-inner join  "DimProductSubcategory" sub
-on  cat."ProductCategoryKey" = sub."ProductCategoryKey"
-) 
-  select 
- "ProductKey"           
-, "ProductAlternateKey"  
-, "ProductSubcategoryKey"
-, "WeightUnitMeasureCode"
-, "SizeUnitMeasureCode"  
-, "EnglishProductName"   
-, "StandardCost"         
-, "FinishedGoodsFlag"    
-, "Color"                
-, "SafetyStockLevel"     
-, "ReorderPoint"         
-, "ListPrice"            
-, "Size"                 
- ,"SizeRange"            
- ,"Weight"               
- ,"DaysToManufacture"    
- ,"ProductLine"          
- ,"DealerPrice"          
- ,"Class"                
- ,"Style"                
- ,"ModelName"            
- ,"EnglishDescription"   
- ,"Status"                   
-,"ProductCategoryKey"         
-,"ProductCategoryAlternateKey"
-,"EnglishProductCategoryName" 
-,"EnglishProductSubcategoryName"
- from "DimProduct" prod
-  left join cat_subcat 
-  on prod."ProductSubcategoryKey" = cat_subcat."SubProductSubcategoryKey"
-);
-
-CREATE OR REPLACE FILE FORMAT ADVENTUREWORKSDW.EDW.FILEFORMAT_431
-	TYPE = JSON
-	NULL_IF = ()
-;
